@@ -24,12 +24,14 @@
 
             // Add click event listener to place a marker
             map.addListener('click', function(e) {
-                placeMarker(e.latLng, map);
+                placeMarkerAndPanTo(e.latLng, map);
+
+                // Send location to Qualtrics
+                sendLocationToQualtrics(e.latLng.lat(), e.latLng.lng());
             });
         }
 
-        // Function to place a marker on the map
-        function placeMarker(latLng, map) {
+        function placeMarkerAndPanTo(latLng, map) {
             if (marker) {
                 // Move the existing marker
                 marker.setPosition(latLng);
@@ -40,9 +42,18 @@
                     map: map
                 });
             }
+            map.panTo(latLng);
+        }
+
+        function sendLocationToQualtrics(lat, lng) {
+            window.parent.postMessage({
+                type: 'LOCATION_SELECTED',
+                data: { latitude: lat, longitude: lng }
+            }, 'https://yourqualtricsdomain.qualtrics.com'); // Replace with your Qualtrics domain
         }
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3EjodCGf4qaBm1S9Gqem7BhEfyNf3B70&callback=initMap"></script>
 </body>
 </html>
+
 
