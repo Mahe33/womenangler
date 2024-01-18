@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interactive Map</title>
+    <style>
+        #map { height: 400px; width: 100%; }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        let map;
+        let marker;
+
+        function initMap() {
+            // Coordinates for Ohio
+            const ohio = { lat: 40.4173, lng: -82.9071 };
+
+            // Initialize map, centered on Ohio
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6, // Zoom level adjusted for a closer view
+                center: ohio
+            });
+
+            // Add click event listener to place a marker
+            map.addListener('click', function(e) {
+                placeMarker(e.latLng, map);
+            });
+        }
+
+        // Function to place a marker on the map
+        function placeMarker(latLng, map) {
+            if (marker) {
+                // Move the existing marker
+                marker.setPosition(latLng);
+            } else {
+                // Create a new marker
+                marker = new google.maps.Marker({
+                    position: latLng,
+                    map: map
+                });
+            }
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC3EjodCGf4qaBm1S9Gqem7BhEfyNf3B70&callback=initMap"></script>
+</body>
+</html>
+
